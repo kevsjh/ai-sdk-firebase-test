@@ -70,14 +70,9 @@ export const invokeChat = async (req: Request, res: Response, next: NextFunction
 
         const { messages } = req.body
 
-        const abortController = new AbortController();
+        const abortController = (req as any).abortController;
         const signal = abortController.signal;
 
-
-        req.on('close', () => {
-            console.log('request closed')
-            abortController.abort();
-        });
 
         return pipeDataStreamToResponse(res, {
             onError: (err: unknown) => {
