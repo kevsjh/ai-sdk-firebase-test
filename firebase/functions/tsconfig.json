@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "noImplicitReturns": true,
+    // "moduleResolution": "nodenext",
+    "noUnusedLocals": false,
+    "outDir": "lib",
+    "sourceMap": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "target": "es2020",
+    "skipLibCheck": true,
+    "jsx": "react"
+  },
+  "compileOnSave": true,
+  "include": ["src"]
+}
