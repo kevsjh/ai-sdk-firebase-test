@@ -65,10 +65,12 @@ export async function POST(req: Request) {
   const result = streamText({
     model: google('gemini-2.0-flash-001'),
     // model: dummyModel,
+    abortSignal: req.signal,
     system:
       "do not respond on markdown or lists, keep your responses brief, you can ask the user to upload images or documents if it could help you understand the problem better",
     messages,
     onFinish({ finishReason, response }) {
+      console.log('finishReason', finishReason)
       console.log('response', response.messages[response.messages.length - 1].content)
     }
   });

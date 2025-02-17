@@ -89,6 +89,7 @@ export const invokeChat = async (req: Request, res: Response, next: NextFunction
                     messages,
                     abortSignal: signal,
                     onFinish({ finishReason, response }) {
+                        console.log('on finish', finishReason)
                         // print last message content
                         console.log('response', response.messages[response.messages.length - 1].content)
 

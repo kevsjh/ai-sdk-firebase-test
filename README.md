@@ -13,7 +13,7 @@ This project demonstrates an issue with aborting chat streams in Express.js when
 
 - - Works correctly in Next.js API
 - - In Express.js: Frontend stream stops, but backend continues processing
-- - Exception: Works in Express.js only when chat endpoint is at root path
+- - Refer to the onFinish logging to identify if the stream is actually stopped
 
 # Prerequisites
 

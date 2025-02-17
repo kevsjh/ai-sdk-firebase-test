@@ -13,7 +13,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import { toast } from "sonner";
 import Link from "next/link";
 import { Markdown } from "@/components/markdown";
-import { useChat } from "ai/react";
+// import { useChat } from "ai/react";
+import { useChat } from "@ai-sdk/react";
 
 const getTextFromDataUrl = (dataUrl: string) => {
   const base64 = dataUrl.split(",")[1];
@@ -43,7 +44,8 @@ function TextFilePreview({ file }: { file: File }) {
 export default function Home() {
   const { messages, input, handleSubmit, handleInputChange, isLoading, stop } =
     useChat({
-      api: 'http://127.0.0.1:5001/testzproj/us-central1/api/v1/chat',
+      // api: 'http://127.0.0.1:5001/testzproj/us-central1/api/v1/chat',
+      api: 'http://127.0.0.1:5001/testzproj/us-central1/api',
       onError: () =>
         toast.error("You've been rate limited, please try again later!"),
     });
