@@ -78,106 +78,108 @@ exports.api = onRequest({
     memory: '1GiB',
 }, (req, res) => {
 
-    // return mainApp(req, res)
+    return mainApp(req, res)
 
-    const { messages } = req.body
+    // ** testing on index file
 
-    const controller = new AbortController();
-    const abortSignal = controller.signal;
+    // const { messages } = req.body
 
-    // on close
-    req.on('close', () => {
-        console.log('request closed')
-        controller.abort()
-    })
+    // const controller = new AbortController();
+    // const abortSignal = controller.signal;
 
-    req.on('end', () => {
-        console.log('request end')
-        controller.abort()
-    })
+    // // on close
+    // req.on('close', () => {
+    //     console.log('request closed')
+    //     controller.abort()
+    // })
 
-    req.on('aborted', () => {
-        console.log('Request aborted (middleware)');
-        controller.abort()
-    });
+    // req.on('end', () => {
+    //     console.log('request end')
+    //     controller.abort()
+    // })
 
-    req.on('pause', () => {
-        console.log('Request paused (middleware)');
-        controller.abort()
-    });
+    // req.on('aborted', () => {
+    //     console.log('Request aborted (middleware)');
+    //     controller.abort()
+    // });
 
-
-    res.on('close', () => {
-        console.log('response closed')
-
-    })
-    res.on('finish', () => {
-        console.log('response finish')
-    })
-    res.on('error', (err) => {
-        console.log('response error', err)
-    })
+    // req.on('pause', () => {
+    //     console.log('Request paused (middleware)');
+    //     controller.abort()
+    // });
 
 
+    // res.on('close', () => {
+    //     console.log('response closed')
 
-    req.on('error', (err) => {
-        console.log('request error', err)
-    })
-
-    req.on('finish', () => {
-        console.log('request finish')
-        controller.abort()
-    })
-
-
-    req.on('data', () => {
-        console.log('request data')
-    })
-    req.on('readable', () => {
-        console.log('request readable')
-    })
+    // })
+    // res.on('finish', () => {
+    //     console.log('response finish')
+    // })
+    // res.on('error', (err) => {
+    //     console.log('response error', err)
+    // })
 
 
-    return pipeDataStreamToResponse(res, {
-        onError: (err: unknown) => {
-            error(`Error in pipeDataStreamToResponse: ${err}`)
-            return 'Something went wrong. Please try again later.'
-        },
-        execute(writer) {
-            const stream = streamText({
 
-                // use a real model to test as well
-                // model: google('gemini-2.0-flash-001'),
-                model: dummyModel,
-                system: 'You are a helpful assistant that can answer questions and help with tasks.',
-                messages,
-                abortSignal: abortSignal,
-                onFinish({ finishReason, response }) {
-                    console.log('on finish', finishReason)
-                    // print last message content
+    // req.on('error', (err) => {
+    //     console.log('request error', err)
+    // })
 
-                    if (abortSignal.aborted) {
-                        console.log('request aborted')
-                        return
-                    }
+    // req.on('finish', () => {
+    //     console.log('request finish')
+    //     controller.abort()
+    // })
 
-                    console.log('response', response.messages[response.messages.length - 1].content)
 
-                    if (finishReason === 'stop') {
-                        const responseMessages = response.messages;
-                        // let chatRef = firebaseFirestore.collection("chats").doc(chatId)
-                        // chatRef.set({
-                        //     userMessage: messages[messages.length - 1].content,
-                        //     assistantMessage: responseMessages[responseMessages.length - 1].content,
-                        //     createdAt: FieldValue.serverTimestamp()
-                        // })
-                    }
+    // req.on('data', () => {
+    //     console.log('request data')
+    // })
+    // req.on('readable', () => {
+    //     console.log('request readable')
+    // })
 
-                }
-            })
-            stream.mergeIntoDataStream(writer, {
-                sendReasoning: true,
-            });
-        },
-    })
+
+    // return pipeDataStreamToResponse(res, {
+    //     onError: (err: unknown) => {
+    //         error(`Error in pipeDataStreamToResponse: ${err}`)
+    //         return 'Something went wrong. Please try again later.'
+    //     },
+    //     execute(writer) {
+    //         const stream = streamText({
+
+    //             // use a real model to test as well
+    //             // model: google('gemini-2.0-flash-001'),
+    //             model: dummyModel,
+    //             system: 'You are a helpful assistant that can answer questions and help with tasks.',
+    //             messages,
+    //             abortSignal: abortSignal,
+    //             onFinish({ finishReason, response }) {
+    //                 console.log('on finish', finishReason)
+    //                 // print last message content
+
+    //                 if (abortSignal.aborted) {
+    //                     console.log('request aborted')
+    //                     return
+    //                 }
+
+    //                 console.log('response', response.messages[response.messages.length - 1].content)
+
+    //                 if (finishReason === 'stop') {
+    //                     const responseMessages = response.messages;
+    //                     // let chatRef = firebaseFirestore.collection("chats").doc(chatId)
+    //                     // chatRef.set({
+    //                     //     userMessage: messages[messages.length - 1].content,
+    //                     //     assistantMessage: responseMessages[responseMessages.length - 1].content,
+    //                     //     createdAt: FieldValue.serverTimestamp()
+    //                     // })
+    //                 }
+
+    //             }
+    //         })
+    //         stream.mergeIntoDataStream(writer, {
+    //             sendReasoning: true,
+    //         });
+    //     },
+    // })
 });
